@@ -1,0 +1,40 @@
+{
+  "name": "kotodama-sh1h4r41",
+  "main": "svelte/.svelte-kit/cloudflare/_worker.js",
+  "compatibility_date": "2025-03-17",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_als"
+  ],
+  "vars": {
+    "APP_CAPABILITIES": "[\"bpmn-dispatch\",\"bill-extraction\",\"web-payment-automation\",\"recurring-registration\",\"playwright-daemon-bridge\",\"keychain-credential-handoff\"]",
+    "APP_DEPLOY_AT": "2026-04-19T09:00:00Z",
+    "APP_DESCRIPTION": "Payment Web automation actor — Gmail bill extract + Playwright daemon + Keychain credential handoff (confirmBeforeCommit)",
+    "APP_DISPLAY_NAME": "Shiharai",
+    "APP_EMBED_URL": "https://sh1h4r41.etzhayyim.com/?embed=1",
+    "APP_FRAMEWORK": "sveltekit-edge-bff",
+    "APP_NANOID": "sh1h4r41",
+    "APP_PERFORMER_TYPE": "service",
+    "APP_SOURCE": "custom",
+    "APP_UI_TYPE": "appview",
+    "APP_VERSION": "0.1.0",
+    "INTERFACES_REQUIRES": "[\"etzhayyim:collection/collection@1.0.0\",\"etzhayyim:vault/vault@1.0.0\"]",
+    "AGENTGATEWAY_MCP_ROUTER_URL": "https://mcp.etzhayyim.com/xrpc/com.etzhayyim.mcp.message"
+  },
+  "routes": [
+    {
+      "pattern": "sh1h4r41.etzhayyim.com/*",
+      "zone_name": "etzhayyim.com"
+    },
+    {
+      "pattern": "shiharcom.etzhayyim.ai/*",
+      "zone_name": "etzhayyim.com"
+    }
+  ],
+  "assets": {
+    "directory": "./svelte/.svelte-kit/cloudflare/client",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}

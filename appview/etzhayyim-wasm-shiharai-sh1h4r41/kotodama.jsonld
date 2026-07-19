@@ -1,0 +1,104 @@
+{
+  "@context": "https://etzhayyim.com/ns/kotodama/v1",
+  "@id": "did:web:shiharai.etzhayyim.com",
+  "name": "shiharai",
+  "nanoid": "sh1h4r41",
+  "performerType": "service",
+  "runtimeType": "worker",
+  "sensitivity": "confidential",
+  "source": "custom",
+  "version": "0.1.0",
+  "build": {
+    "guestLanguage": "ts",
+    "role": "thin-edge",
+    "businessLogic": "40-engine/kotoba/crates/kotoba-kotodama/py/src/kotodama/ingest/shiharai.py",
+    "bpmn": "etzhayyim-root/00-contracts/bpmn/com/etzhayyim/shiharai"
+  },
+  "component": {
+    "path": "src/app.ts"
+  },
+  "profile": {
+    "displayName": "Shiharai — Payment Web Automation",
+    "description": "支払 email を抽出し、Web 支払いページを Playwright 駆動 (local daemon) で埋め、confirmPayment 承認後に最終 submit する汎用 actor。credential は macOS Keychain / Vault (ADR-0029 ephemeralVaultKey) で Mac 外に plaintext が出ない。",
+    "isBot": true,
+    "agentType": "supervised",
+    "operator": "jun784+etzhayyim.com",
+    "capabilities": [
+      "bpmn-dispatch",
+      "bill-extraction",
+      "web-payment-automation",
+      "recurring-registration",
+      "playwright-daemon-bridge",
+      "keychain-credential-handoff"
+    ]
+  },
+  "interfaces": {
+    "package": "etzhayyim:shiharai@0.1.0",
+    "requires": [
+      "etzhayyim:collection/collection@1.0.0",
+      "etzhayyim:vault/vault@1.0.0"
+    ]
+  },
+  "governance": {
+    "raci": "responsible",
+    "classification": "confidential"
+  },
+  "convoSystemPrompt": "You are Shiharai — a payment automation agent for jun784 and Etzhayyim. You read Gmail bill emails, extract payment details, drive a local Playwright daemon on the user's Mac to fill Web payment forms, and only commit the final submit after explicit user approval via confirmPayment. Credentials stay in macOS Keychain — never log, persist, or echo them. Respond in the user's language, concisely. Before any destructive action (confirmPayment, registerRecurring), summarize the exact state mutation and ask for approval.",
+  "duties": [
+    "勤労の義務",
+    "confirm-before-commit"
+  ],
+  "kpi": [
+    "bill-on-time-rate",
+    "late-fee-avoided-jpy"
+  ],
+  "deploy": {},
+  "routes": [
+    {
+      "host": "shiharai.etzhayyim.com",
+      "paths": ["/"],
+      "tls": true
+    }
+  ],
+  "space": {
+    "name": "Shiharai Agent",
+    "joinRule": "invite",
+    "historyVisibility": "shared",
+    "channels": [
+      {
+        "name": "pending-bills",
+        "kind": "private",
+        "default": true
+      },
+      {
+        "name": "payment-log",
+        "kind": "private"
+      },
+      {
+        "name": "job-queue",
+        "kind": "private"
+      }
+    ]
+  },
+  "triggers": {
+    "subscribeRepos": {
+      "collections": [
+        "com.etzhayyim.apps.gmail.email",
+        "com.etzhayyim.apps.shiharai.bill",
+        "com.etzhayyim.apps.shiharai.payment",
+        "com.etzhayyim.apps.shiharai.biller",
+        "com.etzhayyim.apps.shiharai.recurring",
+        "com.etzhayyim.apps.shiharai.job"
+      ]
+    }
+  },
+  "ui": {
+    "accent": "#0c7b93",
+    "icon": "💴",
+    "ssrRoutes": {
+      "apps": "etzhayyim.shiharai.v1.ShiharaiService/shiharai.tools",
+      "live": "etzhayyim.shiharai.v1.ShiharaiService/shiharai.dashboard"
+    }
+  },
+  "uiType": "appview"
+}

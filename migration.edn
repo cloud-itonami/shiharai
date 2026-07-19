@@ -1,0 +1,1 @@
+{:schema "etzhayyim.migration/v1" :source {:repository "etzhayyim/root" :revision "84c96c64c069ef792803de1d3e288d07c76ccdf7" :path "60-apps/etzhayyim-project-shiharai" :tree "d1774304609e6f6b043e0b8a51a939e6a4cdd9b6" :tracked-files 24 :bytes 77801} :destination {:repository "etzhayyim/com-etzhayyim-app-shiharai"} :identity {:allowed-additions ["README.edn" "migration.edn"]}}

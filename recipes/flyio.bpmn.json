@@ -1,0 +1,27 @@
+{
+  "id": "shiharai-flyio-v1",
+  "name": "Fly.io failed-payment retry",
+  "version": 1,
+  "variables": {
+    "billId": { "type": "string" },
+    "payUrl": { "type": "string", "default": "https://fly.io/dashboard/personal/billing" },
+    "expectedAmountJpy": { "type": "integer" }
+  },
+  "flow": [
+    { "id": "start",    "type": "startEvent", "next": "open" },
+    { "id": "open",     "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.sessionOpen", "params": { "target": "local" }, "resultAs": "session", "next": "goto" },
+    { "id": "goto",     "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.goto", "params": { "sessionId": "{{session.sessionId}}", "url": "https://fly.io/login" }, "next": "fillEmail" },
+    { "id": "fillEmail","type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.fill", "params": { "sessionId": "{{session.sessionId}}", "selector": "input[name='email']", "valueRef": "keychain:etzhayyim.shiharai.flyio/primary.username" }, "next": "fillPass" },
+    { "id": "fillPass", "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.fill", "params": { "sessionId": "{{session.sessionId}}", "selector": "input[name='password']", "valueRef": "keychain:etzhayyim.shiharai.flyio/primary.password" }, "next": "login" },
+    { "id": "login",    "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.click", "params": { "sessionId": "{{session.sessionId}}", "selector": "button[type='submit']" }, "next": "waitDash" },
+    { "id": "waitDash", "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.waitFor", "params": { "sessionId": "{{session.sessionId}}", "state": "networkidle" }, "next": "gotoBilling" },
+    { "id": "gotoBilling","type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.goto", "params": { "sessionId": "{{session.sessionId}}", "url": "{{payUrl}}" }, "next": "retry" },
+    { "id": "retry",    "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.click", "params": { "sessionId": "{{session.sessionId}}", "selector": "button:has-text('Retry')" }, "next": "snapshot" },
+    { "id": "snapshot", "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.snapshot", "params": { "sessionId": "{{session.sessionId}}" }, "next": "approve" },
+    { "id": "approve",  "type": "messageIntermediateCatchEvent", "messageName": "approved", "timeout": "PT10M", "onTimeout": "abortTimeout", "next": "commit" },
+    { "id": "commit",   "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.click", "params": { "sessionId": "{{session.sessionId}}", "selector": "button[type='submit']" }, "next": "close" },
+    { "id": "close",    "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.sessionClose", "params": { "sessionId": "{{session.sessionId}}" }, "next": "end" },
+    { "id": "end",      "type": "endEvent" },
+    { "id": "abortTimeout", "type": "errorEndEvent", "errorCode": "approval-timeout" }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "shiharai-paidy-v1",
+  "name": "Paidy payment via dashboard",
+  "version": 1,
+  "variables": {
+    "billId": { "type": "string" },
+    "payUrl": { "type": "string", "default": "https://paidy.com/account" },
+    "expectedAmountJpy": { "type": "integer" }
+  },
+  "flow": [
+    { "id": "start",    "type": "startEvent", "next": "open" },
+    { "id": "open",     "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.sessionOpen", "params": { "target": "local" }, "resultAs": "session", "next": "goto" },
+    { "id": "goto",     "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.goto", "params": { "sessionId": "{{session.sessionId}}", "url": "{{payUrl}}" }, "next": "fillEmail" },
+    { "id": "fillEmail","type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.fill", "params": { "sessionId": "{{session.sessionId}}", "selector": "input[type='email']", "valueRef": "keychain:etzhayyim.shiharai.paidy/primary.username" }, "next": "sendOtp" },
+    { "id": "sendOtp",  "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.click", "params": { "sessionId": "{{session.sessionId}}", "selector": "button:has-text('ログイン')" }, "next": "waitOtp" },
+    { "id": "waitOtp",  "type": "messageIntermediateCatchEvent", "messageName": "otp-received", "timeout": "PT5M", "onTimeout": "abortOtp", "next": "fillOtp" },
+    { "id": "fillOtp",  "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.fill", "params": { "sessionId": "{{session.sessionId}}", "selector": "input[name*='code']", "value": "{{otpCode}}" }, "next": "submitOtp" },
+    { "id": "submitOtp","type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.click", "params": { "sessionId": "{{session.sessionId}}", "selector": "button[type='submit']" }, "next": "snapshot" },
+    { "id": "snapshot", "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.snapshot", "params": { "sessionId": "{{session.sessionId}}" }, "next": "approve" },
+    { "id": "approve",  "type": "messageIntermediateCatchEvent", "messageName": "approved", "timeout": "PT10M", "onTimeout": "abortTimeout", "next": "close" },
+    { "id": "close",    "type": "serviceTask", "nsid": "com.etzhayyim.apps.playwright.sessionClose", "params": { "sessionId": "{{session.sessionId}}" }, "next": "end" },
+    { "id": "end",      "type": "endEvent" },
+    { "id": "abortOtp", "type": "errorEndEvent", "errorCode": "otp-not-received" },
+    { "id": "abortTimeout", "type": "errorEndEvent", "errorCode": "approval-timeout" }
+  ]
+}
