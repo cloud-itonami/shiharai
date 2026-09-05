@@ -1,6 +1,6 @@
 {
   "name": "kotodama-sh1h4r41",
-  "main": "svelte/.svelte-kit/cloudflare/_worker.js",
+  "main": "./src/app.ts",
   "compatibility_date": "2025-03-17",
   "compatibility_flags": [
     "nodejs_compat",
@@ -12,7 +12,7 @@
     "APP_DESCRIPTION": "Payment Web automation actor — Gmail bill extract + Playwright daemon + Keychain credential handoff (confirmBeforeCommit)",
     "APP_DISPLAY_NAME": "Shiharai",
     "APP_EMBED_URL": "https://sh1h4r41.etzhayyim.com/?embed=1",
-    "APP_FRAMEWORK": "sveltekit-edge-bff",
+    "APP_FRAMEWORK": "shadow-cljs-edge-bff",
     "APP_NANOID": "sh1h4r41",
     "APP_PERFORMER_TYPE": "service",
     "APP_SOURCE": "custom",
@@ -32,7 +32,7 @@
     }
   ],
   "assets": {
-    "directory": "./svelte/.svelte-kit/cloudflare/client",
+    "directory": "../../web/dist",
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "none"

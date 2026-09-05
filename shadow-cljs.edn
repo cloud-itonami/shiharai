@@ -1,0 +1,13 @@
+;; shadow-cljs build for the shiharai (etzhayyim-wasm-shiharai-sh1h4r41) appview UI.
+;; Mirrors orgs/kotoba-lang/murakumo-studio/shadow-cljs.edn and
+;; orgs/cloud-itonami/app-itonami/shadow-cljs.edn:
+;; CLJS + reagent on kotoba-ui.core + appkit.core (murakumo-studio構成).
+{:deps {:aliases [:cljs]}
+ :nrepl {:port 9632}
+
+ :builds
+ {:app
+  {:target :browser
+   :output-dir "web/dist/js"
+   :asset-path "js"
+   :modules {:main {:init-fn cloud-itonami.shiharai.desktop/init!}}}}}

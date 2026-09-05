@@ -1,0 +1,12 @@
+{
+  "name": "shiharai",
+  "version": "1.0.0",
+  "description": "shiharai — payment web automation actor appview UI (shadow-cljs + reagent + kotoba-ui)",
+  "main": "index.js",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
