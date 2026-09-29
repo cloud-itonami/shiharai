@@ -1,6 +1,6 @@
 # Operator quickstart
 
-**Read this first: `CLAUDE.md` states that this actor executes the final payment
+**Read this first: `AGENTS.md` states that this actor executes the final payment
 submit, and that it overrides ADR-0032 `決済=禁止`.** Whatever else is true of this
 repository, that is the sentence that governs how carefully anything here is
 touched.
@@ -150,11 +150,11 @@ the thing that answers.
 
 ## 5. What is not here, and it is most of it ⚠
 
-- **Credential custody.** `CLAUDE.md` describes macOS Keychain → a local daemon →
+- **Credential custody.** `AGENTS.md` describes macOS Keychain → a local daemon →
   an ephemeral wrap pushed to `vault.etzhayyim.com` → decrypted in the Worker for
   60 seconds. None of that is in this tree; the registry holds a service *name*.
 - **The browser automation.** A local Playwright daemon on the operator's Mac, per
-  `CLAUDE.md`, with Cloudflare Browser Rendering listed as Phase 3.
+  `AGENTS.md`, with Cloudflare Browser Rendering listed as Phase 3.
 - **The amount check.** See §3.
 - **`MIGRATION-TODO.md` carries 7 unchecked constitutional invariants**, so this
   app is not yet etzhayyim-aligned by its own file's account.
