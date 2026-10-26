@@ -11,4 +11,5 @@
  {:cljs
   {:extra-deps {thheller/shadow-cljs {:mvn/version "2.28.20"}
                 reagent/reagent {:mvn/version "1.2.0"}
-                io.github.kotoba-lang/appkit {:local/root "../../kotoba-lang/appkit"}}}}}
+                io.github.kotoba-lang/appkit
+        {:local/root "../../kotoba-lang/kotoba/lib/kotoba.appkit"}}}}}
